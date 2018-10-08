@@ -23,9 +23,9 @@ public class ObjectList extends AppCompatActivity {
 
     MyApplication myApplication;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference notebookRef = db.collection("users");
+    private CollectionReference notebookRef = db.collection("circles").document("EnNobcysLalgjr5OCehC").collection("objects");
 
-    private UserAdapter adapter;
+    private ObjectAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +34,13 @@ public class ObjectList extends AppCompatActivity {
 
         myApplication = (MyApplication)getApplicationContext();
 
-        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED){
-            myApplication.callPermission = true;
-        }
 
-        if (!myApplication.callPermission){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE},10);
 
-        }
-
-        FloatingActionButton buttonAddUser = findViewById(R.id.button_add);
-        buttonAddUser.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton buttonAddObject = findViewById(R.id.button_add);
+        buttonAddObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ObjectList.this, UserAdd.class));
+                startActivity(new Intent(ObjectList.this, ObjectAdd.class));
             }
         });
 
@@ -70,11 +63,11 @@ public class ObjectList extends AppCompatActivity {
 
         Context context = this.getApplicationContext();
 
-        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
-                .setQuery(query, User.class)
+        FirestoreRecyclerOptions<Object> options = new FirestoreRecyclerOptions.Builder<Object>()
+                .setQuery(query, Object.class)
                 .build();
 
-        adapter = new UserAdapter(options, context);
+        adapter = new ObjectAdapter(options, context);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);

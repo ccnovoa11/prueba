@@ -59,6 +59,13 @@ public class UserList extends AppCompatActivity {
 
         Button historial = findViewById(R.id.historial);
         Button objeto = findViewById(R.id.objetos);
+        objeto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserList.this, ObjectList.class));
+            }
+        });
+
         Button inicio = findViewById(R.id.inicio);
 
         inicio.setOnClickListener(new View.OnClickListener() {
