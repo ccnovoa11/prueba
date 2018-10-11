@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -46,6 +47,26 @@ public class ObjectList extends AppCompatActivity {
 
 
         setUpRecyclerView();
+
+        Button circulo = findViewById(R.id.circulo);
+
+        Button historial = findViewById(R.id.historial);
+        Button objeto = findViewById(R.id.objetos);
+        circulo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ObjectList.this, UserList.class));
+            }
+        });
+
+        Button inicio = findViewById(R.id.inicio);
+
+        inicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ObjectList.this, CircleList.class));
+            }
+        });
     }
 
     @Override

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 if (existe == true){
                     //Intent intentIngresar = new Intent(MainActivity.this, NuevoCirculoInicio.class);
                     //MainActivity.this.startActivity(intentIngresar);
-                    Intent intent = new Intent(MainActivity.this, UserList.class);
+                    Intent intent = new Intent(MainActivity.this, CircleList.class);
                     MainActivity.this.startActivity(intent);
 
 

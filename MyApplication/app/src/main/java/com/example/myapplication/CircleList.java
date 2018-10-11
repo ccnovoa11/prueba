@@ -31,9 +31,9 @@ public class CircleList extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference collectionReference = db.collection("circles");
-    PopupWindow popupWindowCircles;
+    //PopupWindow popupWindowCircles;
 
-    Button button = findViewById(R.id.buttonShow);
+    //Button button = findViewById(R.id.buttonShow);
 
     List list = new ArrayList();
     String content[];
