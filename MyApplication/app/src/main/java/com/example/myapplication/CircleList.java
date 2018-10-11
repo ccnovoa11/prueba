@@ -155,5 +155,12 @@ public class CircleList extends AppCompatActivity {
                 startActivity(new Intent(CircleList.this, CircleAdd.class));
             }
         });
+
+        historial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CircleList.this, Historial.class));
+            }
+        });
     }
 }

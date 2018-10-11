@@ -74,6 +74,13 @@ public class UserList extends AppCompatActivity {
                 startActivity(new Intent(UserList.this, CircleList.class));
             }
         });
+
+        historial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserList.this, Historial.class));
+            }
+        });
     }
 
     @Override

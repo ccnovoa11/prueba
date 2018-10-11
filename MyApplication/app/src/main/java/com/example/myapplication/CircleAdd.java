@@ -1,14 +1,19 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -58,20 +63,56 @@ public class CircleAdd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Log.d("tag", "LATITUD" + lat);
-                Log.d("tag", "LONGITUD" + lat);
-                if (lat > 0) {
-                    try {
-                        saveCircle();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                if(isConnected() && isOnlineNet()) {
+
+                    Log.d("tag", "LATITUD" + lat);
+                    Log.d("tag", "LONGITUD" + lat);
+                    if (lat > 0) {
+                        try {
+                            saveCircle();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(CircleAdd.this, "No ha sido posible obtener su ubicación actual", Toast.LENGTH_SHORT).show();
+                        location();
+
+                        buildDialog(CircleAdd.this).show();
                     }
-                } else {
-                    Toast.makeText(CircleAdd.this, "No ha sido posible obtener su ubicación actual", Toast.LENGTH_SHORT).show();
-                    location();
                 }
+                else
+                {
+                    buildDialog(CircleAdd.this).show();
+                }
+
             }
         });
+    }
+
+    public boolean isConnected() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (actNetInfo != null && actNetInfo.isConnected());
+    }
+
+    public boolean isOnlineNet()
+    {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+
+            int val           = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void location() {
@@ -147,13 +188,49 @@ public class CircleAdd extends AppCompatActivity {
             return;
         }
 
-        CollectionReference circleRef = FirebaseFirestore.getInstance()
-                .collection("circles");
+
+            CollectionReference circleRef = FirebaseFirestore.getInstance()
+                    .collection("circles");
 
 
 
-        circleRef.add(new Circle(name, lat, lon));
-        Toast.makeText(CircleAdd.this, "Circulo agregado", Toast.LENGTH_SHORT).show();
-        finish();
+            circleRef.add(new Circle(name, lat, lon));
+            Toast.makeText(CircleAdd.this, "Circulo agregado", Toast.LENGTH_SHORT).show();
+            finish();
+
+
+    }
+
+    /*public boolean isConnected(Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = cm.getActiveNetworkInfo();
+
+        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
+            android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            android.net.NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+            if((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting())) return true;
+        else return false;
+        } else
+        return false;
+    }*/
+
+    public AlertDialog.Builder buildDialog(Context c) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(c);
+        builder.setTitle("Error");
+        builder.setMessage("La conexión a internet se ha perdido, comprueba que tu celular tenga acceso a internet ya sea por datos o por wifi");
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                finish();
+            }
+        });
+
+        return builder;
     }
 }

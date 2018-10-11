@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -36,11 +39,11 @@ public class ObjectList extends AppCompatActivity {
         myApplication = (MyApplication)getApplicationContext();
 
 
-
         FloatingActionButton buttonAddObject = findViewById(R.id.button_add);
         buttonAddObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startActivity(new Intent(ObjectList.this, ObjectAdd.class));
             }
         });
@@ -67,7 +70,41 @@ public class ObjectList extends AppCompatActivity {
                 startActivity(new Intent(ObjectList.this, CircleList.class));
             }
         });
+
+        historial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ObjectList.this, Historial.class));
+            }
+        });
     }
+
+    public boolean isConnected() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (actNetInfo != null && actNetInfo.isConnected());
+    }
+
+    public boolean isOnlineNet()
+    {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+
+            int val           = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
