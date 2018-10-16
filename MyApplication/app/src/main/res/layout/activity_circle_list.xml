@@ -19,6 +19,14 @@
             android:layout_gravity="center"
             android:gravity="center"/>
     </LinearLayout>
+    
+    <Spinner
+        android:id="@+id/spinnerCircles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"/>
+
 
 
     <ImageView
@@ -39,40 +47,39 @@
         app:borderWidth="0dp"
         android:src="@drawable/ic_add"
         />
-    <Button
+    <ImageButton
         android:id="@+id/circulo"
-        android:layout_width="60dp"
-        android:background="@drawable/ic_persona"
-        android:backgroundTint="@android:color/darker_gray"
+        android:layout_width="100dp"
+        android:src="@drawable/ic_persona"
+        android:tint="@android:color/darker_gray"
+        android:backgroundTint="#f2f2f2"
         android:layout_height="60dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"/>
-    <Button
+        android:layout_gravity="bottom|end"/>
+    <ImageButton
         android:id="@+id/historial"
-        android:layout_width="60dp"
+        android:layout_width="100dp"
         android:layout_height="60dp"
-        android:background="@drawable/ic_list"
-        android:backgroundTint="@android:color/darker_gray"
+        android:src="@drawable/ic_list"
+        android:tint="@android:color/darker_gray"
+        android:backgroundTint="#f2f2f2"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="115dp"
+        android:layout_marginRight="90dp"
         />
-    <Button
+    <ImageButton
         android:id="@+id/objetos"
-        android:layout_width="60dp"
-        android:layout_height="45dp"
-        android:background="@drawable/ic_wallet"
-        android:backgroundTint="@android:color/darker_gray"
-        android:layout_marginLeft="115dp"
-        android:layout_marginBottom="7dp"
-        android:layout_gravity="bottom|start"/>
-    <Button
-        android:id="@+id/inicio"
-        android:layout_width="60dp"
+        android:layout_width="100dp"
         android:layout_height="60dp"
-        android:background="@drawable/ic_home"
-        android:backgroundTint="#52E684"
-        android:layout_marginLeft="20dp"
-        android:layout_gravity="bottom|start"
-        android:layout_marginBottom="3dp"/>
+        android:src="@drawable/ic_wallet"
+        android:tint="@android:color/darker_gray"
+        android:backgroundTint="#f2f2f2"
+        android:layout_marginLeft="90dp"
+        android:layout_gravity="bottom|start"/>
+    <ImageButton
+        android:id="@+id/inicio"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_home"
+        android:tint="#52E684"
+        android:backgroundTint="#f2f2f2"
+        android:layout_gravity="bottom|start"/>
 </android.support.design.widget.CoordinatorLayout>

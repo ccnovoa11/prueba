@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -25,8 +24,15 @@ public class ObjectAdd extends AppCompatActivity {
     private EditText editTextImage;
     private Button addButton;
 
+    String identificador;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Bundle extra = getIntent().getExtras();
+        if (extra != null){
+            identificador = extra.getString("key2");
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_object_add);
 
@@ -60,7 +66,7 @@ public class ObjectAdd extends AppCompatActivity {
         if(isConnected() && isOnlineNet()) {
 
             CollectionReference ObjectRef = FirebaseFirestore.getInstance()
-                    .collection("circles").document("EnNobcysLalgjr5OCehC").collection("objects");
+                    .collection("circles").document(identificador).collection("objects");
 
             ObjectRef.add(new Object(nombre, phone));
             Toast.makeText(this, "Objeto agregado", Toast.LENGTH_SHORT).show();

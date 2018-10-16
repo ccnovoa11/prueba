@@ -1,22 +1,15 @@
 package com.example.myapplication;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.PopupWindow;
+import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -33,10 +26,15 @@ public class CircleList extends AppCompatActivity {
     CollectionReference collectionReference = db.collection("circles");
     //PopupWindow popupWindowCircles;
 
+    String idActual;
+
+    final List<String> circles = new ArrayList<String>();
+    final List<String> identificadores = new ArrayList<String>();
+
+
+
     //Button button = findViewById(R.id.buttonShow);
 
-    List list = new ArrayList();
-    String content[];
 
 
 
@@ -46,19 +44,50 @@ public class CircleList extends AppCompatActivity {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
+
+
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
 
-                            String id = documentSnapshot.getId();
-                            Log.d("tag","ID ES ESTE"+id);
+                            identificadores.add(documentSnapshot.getId());
+                            Circle circle = documentSnapshot.toObject(Circle.class);
+
+
+                            circles.add(circle.getName());
+
+                            Spinner spinnerCircles = findViewById(R.id.spinnerCircles);
+                            ArrayAdapter<String> circlesAdapter = new ArrayAdapter<String>(CircleList.this, android.R.layout.simple_spinner_item, circles);
+
+
+
+                            circlesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerCircles.setAdapter(circlesAdapter);
+
+                            spinnerCircles.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    idActual = identificadores.get(position);
+                                    Log.d("tag ","ESTE ES EL ID ACTUAL: "+idActual);
+                                }
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+
+                            Log.d("tag","ESTA ES LA POSICION"+spinnerCircles.getSelectedItemPosition());
+
                             /*Circle circle = documentSnapshot.toObject(Circle.class);
 
                             String name = circle.getName();
 
                             list.add(name);*/
                         }
+
                         //textViewData.setText(data);
                     }
                 });
+
+
     }
 
     /*public PopupWindow popupWindowCircles(){
@@ -120,31 +149,34 @@ public class CircleList extends AppCompatActivity {
         setContentView(R.layout.activity_circle_list);
         loadNotes();
 
-        //content = new String[list.size()];
-        //list.toArray(content);
-
-        //popupWindowCircles = popupWindowCircles();
+        String id = collectionReference.getId();
+        Log.d("tag","THIS IS THE ID: " + id);
 
 
 
 
-        Button circulo = findViewById(R.id.circulo);
+        ImageButton circulo = findViewById(R.id.circulo);
 
-        Button historial = findViewById(R.id.historial);
-        Button objeto = findViewById(R.id.objetos);
-        Button inicio = findViewById(R.id.inicio);
+        ImageButton historial = findViewById(R.id.historial);
+        ImageButton objeto = findViewById(R.id.objetos);
+        final ImageButton inicio = findViewById(R.id.inicio);
 
         circulo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CircleList.this, UserList.class));
+                Intent intent = new Intent(CircleList.this, UserList.class);
+                intent.putExtra("key", idActual);
+                startActivity(intent);
+
             }
         });
 
         objeto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CircleList.this, ObjectList.class));
+                Intent intent = new Intent(CircleList.this, ObjectList.class);
+                intent.putExtra("key", idActual);
+                startActivity(intent);
             }
         });
 
@@ -159,7 +191,9 @@ public class CircleList extends AppCompatActivity {
         historial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CircleList.this, Historial.class));
+                Intent intent = new Intent(CircleList.this, HistorialList.class);
+                intent.putExtra("key", idActual);
+                startActivity(intent);
             }
         });
     }

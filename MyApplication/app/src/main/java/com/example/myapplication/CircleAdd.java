@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,6 +36,8 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.INTERNET;
 
 public class CircleAdd extends AppCompatActivity {
+
+    private FusedLocationProviderClient client;
 
 
     private EditText editTextCircle;
@@ -52,6 +55,8 @@ public class CircleAdd extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_circle_add);
 
+        client = LocationServices.getFusedLocationProviderClient(this);
+
         location();
 
 
@@ -63,9 +68,29 @@ public class CircleAdd extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(isConnected() && isOnlineNet()) {
+                if (isConnected() && isOnlineNet()) {
 
-                    Log.d("tag", "LATITUD" + lat);
+                    if (ActivityCompat.checkSelfPermission(CircleAdd.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                        return;
+                    }
+                    client.getLastLocation().addOnSuccessListener(CircleAdd.this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null){
+                                lat = location.getLatitude();
+                                lon = location.getLongitude();
+                                try {
+                                    saveCircle();
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
+                    });
+
+                    /*Log.d("tag", "LATITUD" + lat);
                     Log.d("tag", "LONGITUD" + lat);
                     if (lat > 0) {
                         try {
@@ -78,7 +103,7 @@ public class CircleAdd extends AppCompatActivity {
                         location();
 
                         buildDialog(CircleAdd.this).show();
-                    }
+                    }*/
                 }
                 else
                 {

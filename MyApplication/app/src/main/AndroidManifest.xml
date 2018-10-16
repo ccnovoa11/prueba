@@ -15,22 +15,39 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserAdd" />
-        <activity android:name=".UserList" />
-        <activity android:name=".CircleAdd" />
-        <activity android:name=".ObjectList" />
-        <activity android:name=".ObjectAdd" />
-        <activity android:name=".CircleList" />
-        <activity android:name=".Historial"></activity>
+        <activity
+            android:name=".UserAdd"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".UserList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CircleAdd"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ObjectList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ObjectAdd"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CircleList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HistorialList"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
